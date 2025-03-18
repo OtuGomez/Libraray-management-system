@@ -21,7 +21,7 @@
 
 
                         <div class="row">
-                            <form action="{{ route('manage-users.update', $user->id) }}" method="POST">
+                            <form action="{{ route('manage-users.update', $user->id) }}" method="POST" autocomplete="off">
                                 @csrf
                                 @method("put")
 
@@ -45,9 +45,24 @@
                                     @enderror
                                 </div>
 
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Role</label>
+                                    <select name="role" id="role" class="form-control @error('role') is-invalid @enderror" required>
+                                        <option value="">Select Role</option>
+                                        <option {{$user->role == "user" ? "selected" : ""}} value="user">User</option>
+                                        <option {{$user->role == "admin" ? "selected" : ""}} value="admin">Admin</option>
+                                    </select>
+                                    @error('role')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary">Update User</button>
-                                    <a href="{{ route('manage-users.index') }}" class="btn btn-danger">Go Back</a>
+                                    @if(Auth::user()->id != $user->id)
+                                        <button type="button" class="btn btn-danger delete-user" data-id="{{ $user->id }}">Delete User</button>
+                                    @endif
+
                                 </div>
 
                             </form>
@@ -62,3 +77,32 @@
     </div>
 
 </x-app-layout>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $(".delete-user").click(function() {
+            let userId = $(this).data("id");
+
+            // Show confirmation alert
+            if (confirm("Are you sure you want to delete this user? This action cannot be undone!")) {
+                // Send DELETE request
+                $.ajax({
+                    url: "/manage-users/" + userId,
+                    type: "POST",
+                    data: {
+                        _method: "DELETE",
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        alert(response.message);
+                        window.location.href = "/manage-users";
+                    },
+                    error: function(xhr) {
+                        alert("An error occurred while deleting the user.");
+                    }
+                });
+            }
+        });
+    });
+</script>

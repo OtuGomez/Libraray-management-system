@@ -14,32 +14,20 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
 
-                    <a class="border-indigo-400 inline-flex items-center px-1 pt-1 border-b-2 text-white  text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out" href="{{ route("dashboard") }}">
-                       Dashboard
-                    </a>
-
-                    <a class="inline-flex items-center px-1 pt-1 border-b-2 text-white  text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out" href="{{ route("manage-users.index") }}">
-                        Manage Users
-                    </a>
-
-                    <a class="inline-flex items-center px-1 pt-1 border-b-2 text-white   text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out" href="#">
-                        Manage Book Loan
+                    <a class="inline-flex items-center px-1 pt-1 border-b-2 text-white  text-sm font-medium leading-5  focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out" href="{{ route("dashboard") }}">
+                       Library Catalogue
                     </a>
 
 
-                    <a class="inline-flex items-center px-1 pt-1 border-b-2 text-white   text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out" href="#">
-                       Reservations
-                    </a>
+                    @if(Auth::user()->role == "admin")
+                        <a class="inline-flex items-center px-1 pt-1 border-b-2 text-white  text-sm font-medium leading-5  focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out" href="{{ route("manage-users.index") }}">
+                            Manage Users
+                        </a>
 
-
-                    <a class="inline-flex items-center px-1 pt-1 border-b-2 text-white   text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out" href="#">
-                        Report
-                     </a>
-
-                     <a class="inline-flex items-center px-1 pt-1 border-b-2 text-white   text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out" href="#">
-                        Setting
-                     </a>
-                     
+                        <a class="inline-flex items-center px-1 pt-1 border-b-2 text-white   text-sm font-medium leading-5 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out" href="{{ route("manage-books.index") }}">
+                            Manage Book
+                        </a>
+                    @endif
 
                 </div>
             </div>

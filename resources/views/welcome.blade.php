@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"><!-- End Required meta tags -->
     <!-- Begin SEO tag -->
     <title> {{ env("APP_NAME") }} | Welcome </title>
-    <meta property="og:title" content="Simple &amp; Beautiful Admin Theme">
+      <meta property="og:title" content="Library Management Sytem">
     <meta name="author" content="Beni Arisandi">
     <meta property="og:locale" content="en_US">
     <meta name="description" content="Library Management System">
@@ -42,10 +42,10 @@
     <main class="app app-site">
         <nav class="navbar navbar-expand-lg navbar-light py-4 bg-dark" data-aos="fade-in">
           <div class="container">
-      
-            <button class="hamburger hamburger-squeeze hamburger-light d-flex d-lg-none" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation"><span class="hamburger-box"><span class="hamburger-inner"></span></span></button> 
-           
-            
+
+            <button class="hamburger hamburger-squeeze hamburger-light d-flex d-lg-none" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation"><span class="hamburger-box"><span class="hamburger-inner"></span></span></button>
+
+
             <a class="navbar-brand ml-auto mr-0 text-white" href="{{ route("welcome") }}">
                 <img src="{{ asset("/images/logo.png") }}" alt="logo" width="50">
              Library Management System
@@ -55,11 +55,11 @@
                 <li class="nav-item mr-lg-3 active">
                   <a class="nav-link py-2 text-white" href="{{ route("welcome") }}">Home</a>
                 </li>
-  
+
                 <li class="nav-item mr-lg-3">
                   <a class="nav-link py-2 text-white" href="{{ route("login") }}">User Account Login</a>
                 </li>
-  
+
                 <li class="nav-item mr-lg-3">
                   <a class="nav-link py-2 text-white" href="{{ route("register") }}">Member Registration</a>
                 </li>
@@ -67,9 +67,9 @@
             </div>
           </div>
         </nav>
-  
-        
-        
+
+
+
         <section class="py-5">
           <div class="container">
             <div class="row text-center text-md-left text-center" style="text-align: center !important">
@@ -92,7 +92,7 @@
             </div>
           </div>
         </section>
-  
+
         <section class="py-5">
           <div class="container">
             <div class="row">
@@ -103,7 +103,7 @@
             </div>
           </div>
         </section>
-  
+
         <section class="position-relative pb-5 bg-light pt-5">
           <div class="container position-relative">
             <h2 class="text-center text-sm-left"> Explore the Benefits </h2>
@@ -160,7 +160,7 @@
         </section>
 
     </main>
-  
+
 
     <!-- BEGIN BASE JS -->
     <script src="/vendor/jquery/jquery.min.js"></script>

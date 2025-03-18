@@ -1,7 +1,15 @@
+<style>
+    .card-img-top {
+        width: 100%; /* Ensure the image fills the card's width */
+        height: 250px; /* Set a fixed height */
+        object-fit: cover; /* Maintain aspect ratio and cover the area */
+    }
+</style>
+
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
+            {{ __('Library Catalogue') }}
         </h2>
     </x-slot>
 
@@ -10,59 +18,98 @@
             <div class=" overflow-hidden shadow-sm sm:rounded-lg">
 
 
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div class="card bg-primary">
-                            <div class="card-body">
-                                <h5 class="card-title text-white">Total Number of Users</h5>
-                                <span style="font-size: 20px" class="text-white"><b>--</b></span>
-                            </div>
-                        </div>
-                    </div>
+                <div class="card">
+                    <div class="card-body">
 
+                        <div class="container">
+                            <h2>Browse Books</h2>
 
-                    <div class="col-sm-4">
-                        <div class="card">
-                            <div class="card-body bg-dark">
-                                <h5 class="card-title text-white">Total Book In Store</h5>
-                                <span style="font-size: 20px" class="text-white"><b>--</b></span>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="col-sm-4">
-                        <div class="card">
-                            <div class="card-body bg-warning">
-                                <h5 class="card-title text-white">Total Book Loans</h5>
-                                <span style="font-size: 20px" class="text-white"><b>--</b></span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
-
-
-                <div class="row mt-5">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5>Activity Logs</h5>
+                            <!-- Search and Filter Section -->
+                            <form method="GET" action="{{route("books.search")}}" class="mb-4 d-flex gap-2">
+                                @csrf
+                                <input type="text" name="title" class="form-control" placeholder="Title"
+                                       value="{{ request('title') }}">
+                                <select name="genre" class="form-control">
+                                    <option value="">Select Genre</option>
+                                    @foreach($categories as $category)
+                                        <option
+                                            value="{{ $category->id }}" {{ request('genre') == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                <input type="text" name="author" class="form-control" placeholder="Author"
+                                       value="{{ request('author') }}">
+                                <button type="submit" class="btn btn-primary">Filter</button>
+                            </form>
                             <br>
-                            <table class="table table-bordered table-hover table-striped dataTable">
-                                <thead>
-                                <tr class="bg-dark">
-                                    <th>#</th>
-                                    <th class="text-white">User</th>
-                                    <th class="text-white">Action</th>
-                                    <th class="text-white">Date</th>
-                                </tr>
-                                </thead>
-                                <tbody>
+                            <hr>
+                            <br>
 
-                                </tbody>
-                            </table>
+                            <!-- Books Grid -->
+                            <div class="row">
+                                @if($books->count() > 0)
+                                    @foreach($books as $book)
+                                        <div class="col-md-4">
+                                            <div class="card mb-4 shadow-sm">
+                                                @if($book->cover_image)
+                                                    <img src="{{ asset('storage/' . $book->cover_image) }}"
+                                                         class="card-img-top" alt="Book Cover">
+                                                @else
+                                                    <img src="{{ asset('images/default-cover.jpg') }}"
+                                                         class="card-img-top"
+                                                         alt="Default Cover">
+                                                @endif
+                                                <div class="card-body">
+                                                    <h5 class="card-title">{{ $book->title }}</h5>
+                                                    <p class="card-text">
+                                                        <strong>Author:</strong> {{ $book->author }} <br>
+                                                        <strong>Category:</strong> {{ $book->category->name }} <br>
+                                                        <strong>Category:</strong> {{ $book->category->name }} <br>
+
+                                                        @if($book->quantity <= 0)
+                                                            <strong class="text-center text-danger">Out of Stock</strong> <br>
+                                                        @else
+                                                            <strong class="text-center text-success">In Stock</strong> <br>
+                                                        @endif
+
+                                                    </p>
+                                                    <br>
+                                                    <hr>
+                                                    <br>
+
+                                                    @if(auth()->user()->borrowedBooks->contains($book->id))
+                                                        <p class="text-info text-center">
+                                                           <b> You already borrowed</b>
+                                                            <button class="btn btn-primary btn-sm return-book" type="button" data-id="{{ $book->id }}">Return Book</button>
+                                                        </p>
+                                                    @else
+                                                        @if($book->quantity > 0)
+                                                            <button type="button" class="btn btn-success borrow-book w-100" data-id="{{ $book->id }}">Borrow Book</button>
+                                                        @else
+                                                            <p class="text-center text-pretty">
+                                                                <b>Check out later</b>
+                                                            </p>
+                                                        @endif
+                                                    @endif
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <div class="row">
+                                        <div class="alert alert-danger text-center" role="alert">
+                                            No book found for the provided filter
+                                        </div>
+                                    </div>
+                                @endif
+
+                            </div>
                         </div>
+
+
                     </div>
                 </div>
 
@@ -71,5 +118,63 @@
         </div>
     </div>
 
-
 </x-app-layout>
+
+<script>
+    $(document).ready(function() {
+
+        // Borrow book
+        $(".borrow-book").click(function() {
+            let bookId = $(this).data("id");
+
+            // Show confirmation alert
+            if (confirm("Are you sure you want to borrow this book?")) {
+                // Send borrow request
+                $.ajax({
+                    url: "/borrow-book/" + bookId,
+                    type: "POST",
+                    data: {
+                        _method: "POST",
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        alert(response.message);
+                        window.location.href = "/dashboard";
+                    },
+                    error: function(xhr) {
+                        console.log(xhr)
+                        alert("An error occurred while user borrowing book.");
+                    }
+                });
+            }
+        });
+
+
+        // return the borrowed book
+        $(".return-book").click(function() {
+            let bookId = $(this).data("id");
+
+            // Show confirmation alert
+            if (confirm("Are you sure you want to return the borrowed book?")) {
+                // Send borrow request
+                $.ajax({
+                    url: "/return-borrow-book/" + bookId,
+                    type: "POST",
+                    data: {
+                        _method: "POST",
+                        _token: "{{ csrf_token() }}"
+                    },
+                    success: function(response) {
+                        alert(response.message);
+                        window.location.href = "/dashboard";
+                    },
+                    error: function(xhr) {
+                        console.log(xhr)
+                        alert("An error occurred while user borrowing book.");
+                    }
+                });
+            }
+        });
+
+    });
+</script>

@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('author');
-            $table->string('isbn')->unique();
+            $table->string('isbn')->nullable();
             $table->foreignId('category_id')->nullable()->constrained('categories')->nullOnDelete();
             $table->integer('quantity')->default(1);
             $table->integer('available_quantity')->default(1);

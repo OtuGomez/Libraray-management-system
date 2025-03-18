@@ -36,7 +36,7 @@
                                         <td>{{$user->name}}</td>
                                         <td>{{$user->email}}</td>
                                         <td>{{$user->created_at->diffforhumans()}}</td>
-                                        <td>{{"user"}}</td>
+                                        <td>{{ucfirst($user->role)}}</td>
                                         <td class="text-center">
                                             <a href="{{route("manage-users.show", $user->id)}}" class="btn btn-dark">
                                                 Details

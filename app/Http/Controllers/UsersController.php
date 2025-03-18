@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Book;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -35,6 +37,7 @@ class UsersController extends Controller
             'fullName' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
+            'role' => 'required',
         ]);
 
         // Create the user using mass assignment
@@ -42,7 +45,7 @@ class UsersController extends Controller
             'name' => $request->fullName,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'user', // Default role
+            'role' => $request->role, // Default role
         ]);
 
         // Redirect with success message
@@ -84,6 +87,7 @@ class UsersController extends Controller
         $user->update([
             'name' => $request->fullName,
             'email' => $request->email,
+            'role' => $request->role,
         ]);
 
         // Redirect with success message
@@ -93,8 +97,11 @@ class UsersController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id) : JsonResponse
     {
-        //
+        $book = User::query()->findOrFail($id);
+        $book->delete();
+
+        return response()->json(['message' => 'User deleted successfully!']);
     }
 }
