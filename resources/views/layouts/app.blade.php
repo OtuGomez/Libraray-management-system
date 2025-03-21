@@ -78,6 +78,7 @@
 
         <script src="{{ asset('/jquery/jquery.min.js') }}"></script>
         <script src="{{ asset("/js/bootstrap.js") }}"></script>
+        <script src="{{ asset("/js/sweetalert.js") }}"></script>
         <script src="{{ asset('/datatables/js/jquery.dataTables.min.js') }}"></script>
         <script src="{{ asset('/datatables/js/dataTables.bootstrap5.min.js') }}"></script>
 

@@ -19,11 +19,15 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
-    // users
+    //============ users ===============
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/book-search', [DashboardController::class, 'filterBook'])->name('books.search');
     Route::post('/borrow-book/{book_id}', [DashboardController::class, 'borrowBook'])->name('book.borrow');
     Route::post('/return-borrow-book/{book_id}', [DashboardController::class, 'returnBorrowedBook'])->name('return.book');
+
+    Route::get('/loan-books', [DashboardController::class, 'myLoadBooks'])->name('loan.books');
+
+
 
 
 
@@ -31,6 +35,8 @@ Route::middleware('auth')->group(function () {
     Route::resource("manage-users", UsersController::class)->middleware(CheckAdminRole::class);
 
     Route::resource("manage-books", BooksController::class)->middleware(CheckAdminRole::class);
+
+    Route::get("manage-books-loans", [BooksController::class,"manageBookLoans"])->name("manage-book.loans")->middleware(CheckAdminRole::class);
 
 
 });

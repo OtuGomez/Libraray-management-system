@@ -53,6 +53,9 @@ class User extends Authenticatable
     {
         return $this->BelongsToMany(Book::class, Loan::class, 'user_id')
             ->withPivot('status')
+            ->withPivot('borrow_date')
+            ->withPivot('due_date')
+            ->withPivot('return_date')
             ->wherePivot('status', 'borrowed');
     }
 }

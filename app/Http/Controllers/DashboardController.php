@@ -107,12 +107,19 @@ class DashboardController extends Controller
         $borrowedBooks->return_date = now();
         $borrowedBooks->save();
 
-
         // increase the available count
         $book->quantity = $book->quantity + 1;
         $book->save();
 
-
         return response()->json(['message' => 'Book has successfully been returned!']);
     }
+
+
+    public function myLoadBooks() : View
+    {
+        $borrowedBooks = User::query()->find(Auth::id())->borrowedBooks;
+        return view("borrowed-books", compact('borrowedBooks'));
+    }
+
+
 }

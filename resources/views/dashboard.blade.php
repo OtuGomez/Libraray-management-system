@@ -68,9 +68,11 @@
                                                         <strong>Category:</strong> {{ $book->category->name }} <br>
 
                                                         @if($book->quantity <= 0)
-                                                            <strong class="text-center text-danger">Out of Stock</strong> <br>
+                                                            <strong class="text-center text-danger">Out of
+                                                                Stock</strong> <br>
                                                         @else
-                                                            <strong class="text-center text-success">In Stock</strong> <br>
+                                                            <strong class="text-center text-success">In Stock</strong>
+                                                            <br>
                                                         @endif
 
                                                     </p>
@@ -80,12 +82,17 @@
 
                                                     @if(auth()->user()->borrowedBooks->contains($book->id))
                                                         <p class="text-info text-center">
-                                                           <b> You already borrowed</b>
-                                                            <button class="btn btn-primary btn-sm return-book" type="button" data-id="{{ $book->id }}">Return Book</button>
+                                                            <b> You already borrowed</b>
+                                                            <button class="btn btn-primary btn-sm return-book"
+                                                                    type="button" data-id="{{ $book->id }}">Return Book
+                                                            </button>
                                                         </p>
                                                     @else
                                                         @if($book->quantity > 0)
-                                                            <button type="button" class="btn btn-success borrow-book w-100" data-id="{{ $book->id }}">Borrow Book</button>
+                                                            <button type="button"
+                                                                    class="btn btn-success borrow-book w-100"
+                                                                    data-id="{{ $book->id }}">Borrow Book
+                                                            </button>
                                                         @else
                                                             <p class="text-center text-pretty">
                                                                 <b>Check out later</b>
@@ -121,59 +128,79 @@
 </x-app-layout>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
 
         // Borrow book
-        $(".borrow-book").click(function() {
+        $(".borrow-book").click(function () {
             let bookId = $(this).data("id");
 
             // Show confirmation alert
-            if (confirm("Are you sure you want to borrow this book?")) {
-                // Send borrow request
-                $.ajax({
-                    url: "/borrow-book/" + bookId,
-                    type: "POST",
-                    data: {
-                        _method: "POST",
-                        _token: "{{ csrf_token() }}"
-                    },
-                    success: function(response) {
-                        alert(response.message);
-                        window.location.href = "/dashboard";
-                    },
-                    error: function(xhr) {
-                        console.log(xhr)
-                        alert("An error occurred while user borrowing book.");
-                    }
-                });
-            }
+            Swal.fire({
+                title: "Confirm?",
+                text: "Are you sure you want to borrow the selected book?",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes",
+                cancelButtonText: "No"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "/borrow-book/" + bookId,
+                        type: "POST",
+                        data: {
+                            _method: "POST",
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success: function (response) {
+                            Swal.fire("Borrow!", response.message, "success").then(() => {
+                                window.location.href = "/dashboard";
+                            });
+                        },
+                        error: function (xhr) {
+                            Swal.fire("Error", "An error occurred while borrowing the book.", "error");
+                        }
+                    });
+                }
+            });
         });
 
 
         // return the borrowed book
-        $(".return-book").click(function() {
+        $(".return-book").click(function () {
             let bookId = $(this).data("id");
 
             // Show confirmation alert
-            if (confirm("Are you sure you want to return the borrowed book?")) {
-                // Send borrow request
-                $.ajax({
-                    url: "/return-borrow-book/" + bookId,
-                    type: "POST",
-                    data: {
-                        _method: "POST",
-                        _token: "{{ csrf_token() }}"
-                    },
-                    success: function(response) {
-                        alert(response.message);
-                        window.location.href = "/dashboard";
-                    },
-                    error: function(xhr) {
-                        console.log(xhr)
-                        alert("An error occurred while user borrowing book.");
-                    }
-                });
-            }
+            Swal.fire({
+                title: "Confirm?",
+                text: "Do you want to return the borrowed book?",
+                icon: "question",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes",
+                cancelButtonText: "No"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: "/return-borrow-book/" + bookId,
+                        type: "POST",
+                        data: {
+                            _method: "POST",
+                            _token: "{{ csrf_token() }}"
+                        },
+                        success: function (response) {
+                            Swal.fire("Return!", response.message, "success").then(() => {
+                                window.location.href = "/dashboard";
+                            });
+                        },
+                        error: function (xhr) {
+                            Swal.fire("Error", "An error occurred while returning the book.", "error");
+                        }
+                    });
+                }
+            });
         });
 
     });

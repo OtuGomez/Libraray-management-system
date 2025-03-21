@@ -14,19 +14,28 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
 
-                    <a class="inline-flex items-center px-1 pt-1 border-b-2 text-white  text-sm font-medium leading-5  focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out" href="{{ route("dashboard") }}">
+                    <a class="inline-flex items-center px-1 pt-1 border-b-2 text-white  text-sm font-medium leading-5  focus:outline-none transition duration-150 ease-in-out" href="{{ route("dashboard") }}">
                        Library Catalogue
+                    </a>
+
+                    <a class="inline-flex items-center px-1 pt-1 border-b-2 text-white  text-sm font-medium leading-5  focus:outline-none transition duration-150 ease-in-out" href="{{ route("loan.books") }}">
+                       My Loan Books
                     </a>
 
 
                     @if(Auth::user()->role == "admin")
-                        <a class="inline-flex items-center px-1 pt-1 border-b-2 text-white  text-sm font-medium leading-5  focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out" href="{{ route("manage-users.index") }}">
+                        <a class="inline-flex items-center px-1 pt-1 border-b-2 text-white  text-sm font-medium leading-5  focus:outline-none transition duration-150 ease-in-out" href="{{ route("manage-users.index") }}">
                             Manage Users
                         </a>
 
-                        <a class="inline-flex items-center px-1 pt-1 border-b-2 text-white   text-sm font-medium leading-5 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out" href="{{ route("manage-books.index") }}">
+                        <a class="inline-flex items-center px-1 pt-1 border-b-2 text-white   text-sm font-medium leading-5 focus:outline-none transition duration-150 ease-in-out" href="{{ route("manage-books.index") }}">
                             Manage Book
                         </a>
+
+                        <a class="inline-flex items-center px-1 pt-1 border-b-2 text-white   text-sm font-medium leading-5 focus:outline-none transition duration-150 ease-in-out" href="{{ route("manage-book.loans") }}">
+                            Manage Book Loans
+                        </a>
+
                     @endif
 
                 </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\Category;
+use App\Models\Loan;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -129,6 +130,13 @@ class BooksController extends Controller
         $book->delete();
 
         return response()->json(['message' => 'Book deleted successfully!']);
+    }
+
+
+    public function manageBookLoans() : View
+    {
+        $borrowedBooks = Loan::query()->get();
+        return view('books.loans', compact('borrowedBooks'));
     }
 
 }
