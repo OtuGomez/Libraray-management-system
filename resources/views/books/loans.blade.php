@@ -22,6 +22,7 @@
                         <table class="table table-bordered table-hover table-striped dataTable">
                             <thead>
                             <tr class="bg-dark">
+                                <th class="text-white">User</th>
                                 <th class="text-white">Title</th>
                                 <th class="text-white">Author</th>
                                 <th class="text-white">Category</th>
@@ -33,6 +34,7 @@
                             <tbody>
                             @foreach($borrowedBooks as $borrowedBook)
                                 <tr>
+                                    <td>{{$borrowedBook->user->name}}</td>
                                     <td>{{$borrowedBook->book->title}}</td>
                                     <td>{{$borrowedBook->book->author}}</td>
                                     <td>{{$borrowedBook->book->category->name}}</td>
