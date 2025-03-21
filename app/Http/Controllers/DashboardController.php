@@ -14,14 +14,19 @@ use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
-    public function index() : View
+    public function index()
     {
-        $books = Book::query()
-            ->get();
+        if(Auth::user()->role == "user")
+        {
+            $books = Book::query()
+                ->get();
 
-        $categories = Category::query()->get();
-        $borrowedBooks = User::query()->find(Auth::id())->borrowedBooks;
-        return view('dashboard', compact('books', 'categories', 'borrowedBooks'));
+            $categories = Category::query()->get();
+            $borrowedBooks = User::query()->find(Auth::id())->borrowedBooks;
+            return view('dashboard', compact('books', 'categories', 'borrowedBooks'));
+        }
+
+        return redirect()->route("manage-books.index");
     }
 
 

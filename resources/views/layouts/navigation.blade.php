@@ -14,6 +14,7 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
 
+                    @if(Auth::user()->role == "user")
                     <a class="inline-flex items-center px-1 pt-1 border-b-2 text-white  text-sm font-medium leading-5  focus:outline-none transition duration-150 ease-in-out" href="{{ route("dashboard") }}">
                        Library Catalogue
                     </a>
@@ -21,6 +22,7 @@
                     <a class="inline-flex items-center px-1 pt-1 border-b-2 text-white  text-sm font-medium leading-5  focus:outline-none transition duration-150 ease-in-out" href="{{ route("loan.books") }}">
                        My Loan Books
                     </a>
+                    @endif
 
 
                     @if(Auth::user()->role == "admin")
