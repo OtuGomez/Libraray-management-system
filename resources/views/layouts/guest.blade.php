@@ -15,6 +15,7 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans text-gray-900 antialiased">
+    <h5 class="text-center text-dark m-4" style="font-size: 20px"><b>{{env("APP_NAME")}}</b></h5>
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100" style="background: url('{{asset("/images/bg_img.jpeg")}}') no-repeat center center fixed; background-size: cover;">
             <div>
                 <img src="{{ asset("/images/logo.png") }}" alt="logo" width="200">
